@@ -1,4 +1,4 @@
-package Graph.Graph_MST;
+package Graph.MinSpanningTree;
 
 public class GraphMSTTest {
 

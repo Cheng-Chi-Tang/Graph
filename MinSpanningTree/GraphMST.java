@@ -1,4 +1,4 @@
-package Graph.Graph_MST;
+package Graph.MinSpanningTree;
 
 import java.util.ArrayList;
 import java.util.Collections;
