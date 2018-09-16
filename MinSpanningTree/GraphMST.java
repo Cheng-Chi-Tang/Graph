@@ -20,7 +20,6 @@ public class GraphMST {
                 rowList.add(0);
             }
 
-//            System.out.print("rowList.size: " + rowList.size());
             adjMatrix.add(rowList);
         }
     }
@@ -93,16 +92,7 @@ public class GraphMST {
         ArrayList<Edge> increaseWeightList = new ArrayList<>();
         sortEdgeList(increaseWeightList);
 
-        /*for(int i = 0; i < increaseWeightList.size(); i ++){
-            System.out.printf("Vertex 1 , Vertex 2 , weight = %d, %d, %d " ,
-                    increaseWeightList.get(i).vertex1,increaseWeightList.get(i).vertex2, increaseWeightList.get(i).weight );
-            System.out.println();
-        }*/
-
-//        System.out.print(" v1Root -  v2Root");
         for(int i = 0; i < increaseWeightList.size()  ; i ++){
-//            System.out.print( getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex1) +" - "+
-//                    getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex2) + "\n");
             if(getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex1)
                     != getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex2)){
 
@@ -111,6 +101,7 @@ public class GraphMST {
             }
         }
 
+        // print out the results
         System.out.print(" v1 -  v2:  weight");
         for(int i = 0; i < numberOfVertex - 1; i++){
             System.out.printf("\n%3d - %3d: %4d",
@@ -123,12 +114,8 @@ public class GraphMST {
 
     }
 
-//    private int get
-
     public void addEdgeToMatrix(int vertex1, int vertex2, int weight){
         ArrayList<Edge> rowList = new ArrayList<>();
-//        System.out.print("Size of adjMatrix: "+ adjMatrix.size());
-//        System.out.print("Size of adjMatrix.get(0): "+ adjMatrix.get(0).size());
         adjMatrix.get(vertex1).set(vertex2, weight);
     }
 
