@@ -1,4 +1,6 @@
-package Graph_MST;
+package Graph.Graph_MST;
+
+import Graph_MST.GraphMST;
 
 import java.util.ArrayList;
 
@@ -6,7 +8,7 @@ public class GraphMSTTest {
 
     public static void main(String[] args){
 
-        GraphMST g6 = new GraphMST(7);
+        Graph_MST.GraphMST g6 = new GraphMST(7);
 
         g6.addEdgeToMatrix(0, 1, 5);g6.addEdgeToMatrix(0, 5, 3);
         g6.addEdgeToMatrix(1, 0, 5);g6.addEdgeToMatrix(1, 2, 10);g6.addEdgeToMatrix(1, 4, 1);g6.addEdgeToMatrix(1, 6, 4);

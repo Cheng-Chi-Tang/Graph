@@ -1,4 +1,4 @@
-package Graph_MST;
+package Graph.Graph_MST;
 
 import java.util.ArrayList;
 import java.util.Collections;
