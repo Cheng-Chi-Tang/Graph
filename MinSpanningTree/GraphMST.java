@@ -80,9 +80,8 @@ public class GraphMST {
 
     public void doKruskalMST() {
         ArrayList<Edge> MSTEdgeList = new ArrayList<>();
-        int edgesetCount = 0;
-
         ArrayList<Integer> subsetList = new ArrayList<>();
+
         for (int i = 0; i < NUMBER_OF_VERTEX; i++) {
             subsetList.add(-1);
         }
@@ -146,6 +145,15 @@ public class GraphMST {
                     predecessorList.set(vertex, minCostVertex);
                     costList.set(vertex, adjMatrix.get(minCostVertex).get(vertex));
                 }
+            }
+        }
+
+        // print out the results
+        System.out.print("v1 -  v2  -  weight");
+        for (int vertex = 0; vertex < NUMBER_OF_VERTEX; vertex++){
+            int predecessor = predecessorList.get(vertex);
+            if(predecessor >= 0) {
+                System.out.print("\n" + vertex + "  -  " + predecessor + "  -   " + adjMatrix.get(vertex).get(predecessor));
             }
         }
     }

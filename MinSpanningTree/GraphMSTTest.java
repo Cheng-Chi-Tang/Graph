@@ -14,21 +14,10 @@ public class GraphMSTTest {
         g6.addEdgeToMatrix(5, 0, 3);g6.addEdgeToMatrix(5, 4, 6);
         g6.addEdgeToMatrix(6, 1, 4);g6.addEdgeToMatrix(6, 2, 8);g6.addEdgeToMatrix(6, 3, 9);g6.addEdgeToMatrix(6, 4, 2);
 
-
+        System.out.print("Do KruskalMST Algorithm\n");
         g6.doKruskalMST();
-        /*ArrayList<ArrayList<Integer>> matrix = g6.getAdjMatrix();
-
-        for(int i = 0 ; i < matrix.size(); i ++ ){
-
-            System.out.print(i + ":");
-            for(int j = 0; j < matrix.size(); j++){
-
-                System.out.print(" " + matrix.get(i).get(j));
-
-            }
-
-            System.out.println();
-        }*/
+        System.out.print("\n\nDo PrimMST Algorithm\n");
+        g6.doPrimMST(2);
 
     }
 }
