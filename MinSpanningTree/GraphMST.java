@@ -5,18 +5,18 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class GraphMST {
-    private int numberOfVertex;
+    private int NUMBER_OF_VERTEX;
     private ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<>();
     private static final int MAX_WEIGHT = 10000;
     private static final int UNVISITED = 0;
     private static final int VISITED = 1;
 
     GraphMST(int size) {
-        numberOfVertex = size;
+        NUMBER_OF_VERTEX = size;
 
-        for (int i = 0; i < numberOfVertex; i++) {
+        for (int i = 0; i < NUMBER_OF_VERTEX; i++) {
             ArrayList<Integer> rowList = new ArrayList<>();
-            for(int j = 0 ; j < numberOfVertex ; j++){
+            for(int j = 0 ; j < NUMBER_OF_VERTEX ; j++){
                 rowList.add(0);
             }
 
@@ -59,8 +59,8 @@ public class GraphMST {
 
     private void sortEdgeList(ArrayList<Edge> edgeArrayList){
 
-        for(int column = 0; column < numberOfVertex -1; column++){
-            for(int row = column + 1 ; row < numberOfVertex; row++){
+        for(int column = 0; column < NUMBER_OF_VERTEX -1; column++){
+            for(int row = column + 1 ; row < NUMBER_OF_VERTEX; row++){
                 if(adjMatrix.get(column).get(row) != 0){
                     edgeArrayList.add(new Edge(column, row, adjMatrix.get(column).get(row)));
                 }
@@ -85,7 +85,7 @@ public class GraphMST {
         int edgesetCount = 0;
 
         ArrayList<Integer> subsetList = new ArrayList<>();
-        for(int i = 0; i < numberOfVertex; i++){
+        for(int i = 0; i < NUMBER_OF_VERTEX; i++){
             subsetList.add(-1);
         }
 
@@ -103,15 +103,57 @@ public class GraphMST {
 
         // print out the results
         System.out.print(" v1 -  v2:  weight");
-        for(int i = 0; i < numberOfVertex - 1; i++){
+        for(int i = 0; i < NUMBER_OF_VERTEX - 1; i++){
             System.out.printf("\n%3d - %3d: %4d",
                     MSTEdgeList.get(i).vertex1, MSTEdgeList.get(i).vertex2, MSTEdgeList.get(i).weight);
         }
 
     }
 
-    public void doPrimMST(){
+    private int getMinCostVertex(ArrayList<Integer> costList, ArrayList<Boolean> isVisitedList) {
 
+        int minCost = MAX_WEIGHT;
+        int minCostVertex = 0;
+        for(int vertex = 0; vertex < NUMBER_OF_VERTEX ; vertex++){
+            if( !isVisitedList.get(vertex) && costList.get(vertex) < minCost){
+                minCost = costList.get(vertex);
+                minCostVertex = vertex;
+            }
+        }
+
+        return minCostVertex;
+    }
+
+    public void doPrimMST(int startVertex) {
+        ArrayList<Integer> costList = new ArrayList<>();
+        ArrayList<Integer> predecessorList = new ArrayList<>();
+        ArrayList<Boolean> isVisitedList = new ArrayList<>();
+
+        for (int i = 0; i < NUMBER_OF_VERTEX; i++) {
+            costList.add(MAX_WEIGHT);
+            predecessorList.add(-1);
+            isVisitedList.add(false);
+        }
+
+        costList.set(startVertex, 0);
+        for (int counter = 0; counter < NUMBER_OF_VERTEX; counter++) {
+            int minCostVertex = getMinCostVertex(costList, isVisitedList);
+            isVisitedList.set(minCostVertex, true);
+
+            for (int vertex = 0; vertex < NUMBER_OF_VERTEX; vertex++) {
+                if( !isVisitedList.get(vertex)
+                        && isVerticesConnected(minCostVertex, vertex)
+                        && adjMatrix.get(minCostVertex).get(vertex) < costList.get(vertex) ){
+
+                    predecessorList.set(vertex, minCostVertex);
+                    costList.set(vertex, adjMatrix.get(minCostVertex).get(vertex));
+                }
+            }
+        }
+    }
+
+    private boolean isVerticesConnected(int vertex1, int vertex2) {
+        return (adjMatrix.get(vertex1).get(vertex2) != 0 );
     }
 
     public void addEdgeToMatrix(int vertex1, int vertex2, int weight){
