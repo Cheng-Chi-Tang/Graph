@@ -16,7 +16,7 @@ public class GraphMST {
 
         for (int i = 0; i < NUMBER_OF_VERTEX; i++) {
             ArrayList<Integer> rowList = new ArrayList<>();
-            for(int j = 0 ; j < NUMBER_OF_VERTEX ; j++){
+            for (int j = 0; j < NUMBER_OF_VERTEX; j++) {
                 rowList.add(0);
             }
 
@@ -29,12 +29,12 @@ public class GraphMST {
         int rootVertex = vertex;
 
         // find the final root
-        while( rootList.get(rootVertex) >= 0){
+        while (rootList.get(rootVertex) >= 0) {
             rootVertex = rootList.get(rootVertex);
         }
 
         // do collapsing
-        while ( vertex != rootVertex) {
+        while (vertex != rootVertex) {
             int currentRoot = rootList.get(vertex);
             rootList.set(vertex, rootVertex);
             vertex = currentRoot;
@@ -43,25 +43,24 @@ public class GraphMST {
         return rootVertex;
     }
 
-    private void setUnion(ArrayList<Integer> rootList, int vertex1, int vertex2){
+    private void setUnion(ArrayList<Integer> rootList, int vertex1, int vertex2) {
         int root1 = getRootFromCollapsing(rootList, vertex1);
         int root2 = getRootFromCollapsing(rootList, vertex2);
 
-        if(rootList.get(root1) <= rootList.get(root2)){
-            rootList.set(root1, rootList.get(root1) + rootList.get(root2) );
+        if (rootList.get(root1) <= rootList.get(root2)) {
+            rootList.set(root1, rootList.get(root1) + rootList.get(root2));
             rootList.set(root2, root1);
-        }
-        else{
-            rootList.set(root2, rootList.get(root1) + rootList.get(root2) );
+        } else {
+            rootList.set(root2, rootList.get(root1) + rootList.get(root2));
             rootList.set(root1, root2);
         }
     }
 
-    private void sortEdgeList(ArrayList<Edge> edgeArrayList){
+    private void sortEdgeList(ArrayList<Edge> edgeArrayList) {
 
-        for(int column = 0; column < NUMBER_OF_VERTEX -1; column++){
-            for(int row = column + 1 ; row < NUMBER_OF_VERTEX; row++){
-                if(adjMatrix.get(column).get(row) != 0){
+        for (int column = 0; column < NUMBER_OF_VERTEX - 1; column++) {
+            for (int row = column + 1; row < NUMBER_OF_VERTEX; row++) {
+                if (adjMatrix.get(column).get(row) != 0) {
                     edgeArrayList.add(new Edge(column, row, adjMatrix.get(column).get(row)));
                 }
             }
@@ -70,40 +69,39 @@ public class GraphMST {
         Collections.sort(edgeArrayList, new Comparator<Edge>() {
             @Override
             public int compare(Edge edge1, Edge edge2) {
-                if((edge1.getWeight() >=  edge2.getWeight())) {
+                if ((edge1.weight >= edge2.weight)) {
                     return 1;
-                }
-                else{
+                } else {
                     return -1;
                 }
             }
         });
     }
 
-    public void doKruskalMST(){
+    public void doKruskalMST() {
         ArrayList<Edge> MSTEdgeList = new ArrayList<>();
         int edgesetCount = 0;
 
         ArrayList<Integer> subsetList = new ArrayList<>();
-        for(int i = 0; i < NUMBER_OF_VERTEX; i++){
+        for (int i = 0; i < NUMBER_OF_VERTEX; i++) {
             subsetList.add(-1);
         }
 
         ArrayList<Edge> increaseWeightList = new ArrayList<>();
         sortEdgeList(increaseWeightList);
 
-        for(int i = 0; i < increaseWeightList.size()  ; i ++){
-            if(getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex1)
-                    != getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex2)){
+        for (int i = 0; i < increaseWeightList.size(); i++) {
+            if (getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex1)
+                    != getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex2)) {
 
                 MSTEdgeList.add(increaseWeightList.get(i));
-                setUnion(subsetList, increaseWeightList.get(i).vertex1,increaseWeightList.get(i).vertex2);
+                setUnion(subsetList, increaseWeightList.get(i).vertex1, increaseWeightList.get(i).vertex2);
             }
         }
 
         // print out the results
         System.out.print(" v1 -  v2:  weight");
-        for(int i = 0; i < NUMBER_OF_VERTEX - 1; i++){
+        for (int i = 0; i < NUMBER_OF_VERTEX - 1; i++) {
             System.out.printf("\n%3d - %3d: %4d",
                     MSTEdgeList.get(i).vertex1, MSTEdgeList.get(i).vertex2, MSTEdgeList.get(i).weight);
         }
@@ -114,8 +112,8 @@ public class GraphMST {
 
         int minCost = MAX_WEIGHT;
         int minCostVertex = 0;
-        for(int vertex = 0; vertex < NUMBER_OF_VERTEX ; vertex++){
-            if( !isVisitedList.get(vertex) && costList.get(vertex) < minCost){
+        for (int vertex = 0; vertex < NUMBER_OF_VERTEX; vertex++) {
+            if (!isVisitedList.get(vertex) && costList.get(vertex) < minCost) {
                 minCost = costList.get(vertex);
                 minCostVertex = vertex;
             }
@@ -141,9 +139,9 @@ public class GraphMST {
             isVisitedList.set(minCostVertex, true);
 
             for (int vertex = 0; vertex < NUMBER_OF_VERTEX; vertex++) {
-                if( !isVisitedList.get(vertex)
+                if (!isVisitedList.get(vertex)
                         && isVerticesConnected(minCostVertex, vertex)
-                        && adjMatrix.get(minCostVertex).get(vertex) < costList.get(vertex) ){
+                        && adjMatrix.get(minCostVertex).get(vertex) < costList.get(vertex)) {
 
                     predecessorList.set(vertex, minCostVertex);
                     costList.set(vertex, adjMatrix.get(minCostVertex).get(vertex));
@@ -153,15 +151,15 @@ public class GraphMST {
     }
 
     private boolean isVerticesConnected(int vertex1, int vertex2) {
-        return (adjMatrix.get(vertex1).get(vertex2) != 0 );
+        return (adjMatrix.get(vertex1).get(vertex2) != 0);
     }
 
-    public void addEdgeToMatrix(int vertex1, int vertex2, int weight){
+    public void addEdgeToMatrix(int vertex1, int vertex2, int weight) {
         ArrayList<Edge> rowList = new ArrayList<>();
         adjMatrix.get(vertex1).set(vertex2, weight);
     }
 
-    public ArrayList<ArrayList<Integer>> getAdjMatrix(){
+    public ArrayList<ArrayList<Integer>> getAdjMatrix() {
         return adjMatrix;
     }
 
@@ -172,22 +170,10 @@ public class GraphMST {
         public Edge() {
         }
 
-        public Edge(int vertex1, int vertex2, int weight) {
+        Edge(int vertex1, int vertex2, int weight) {
             this.vertex1 = vertex1;
             this.vertex2 = vertex2;
             this.weight = weight;
-        }
-
-        public int getVertex1(){
-            return vertex1;
-        }
-
-        public int getVertex2(){
-            return vertex2;
-        }
-
-        public int getWeight(){
-            return weight;
         }
 
     }
