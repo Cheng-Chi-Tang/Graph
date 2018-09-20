@@ -1,5 +1,8 @@
 package Graph.MinSpanningTree;
 
+import com.sun.tools.javac.util.List;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +32,7 @@ public class GraphMST {
     private static final int MAX_WEIGHT = 10000;
 
     /**
-     * @param size The number of vertices in this graph
+     * @param size the number of vertices in this graph
      */
     public GraphMST(int size) {
         NUMBER_OF_VERTEX = size;
@@ -108,7 +111,7 @@ public class GraphMST {
             }
         }
 
-        Collections.sort(edgeArrayList, new Comparator<Edge>() {
+        edgeArrayList.sort(new Comparator<Edge>() {
             @Override
             public int compare(Edge edge1, Edge edge2) {
                 if ((edge1.weight >= edge2.weight)) {
