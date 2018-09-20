@@ -31,7 +31,7 @@ public class GraphMST {
     /**
      * @param size The number of vertices in this graph
      */
-    GraphMST(int size) {
+    public GraphMST(int size) {
         NUMBER_OF_VERTEX = size;
 
         for (int i = 0; i < NUMBER_OF_VERTEX; i++) {
@@ -135,12 +135,12 @@ public class GraphMST {
 
         ArrayList<Edge> increaseWeightList = getSortedEdgeList();
 
-        for (int i = 0; i < increaseWeightList.size(); i++) {
-            if (getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex1)
-                    != getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex2)) {
+        for (Edge anIncreaseWeightList : increaseWeightList) {
+            if (getRootFromCollapsing(subsetList, anIncreaseWeightList.vertex1)
+                    != getRootFromCollapsing(subsetList, anIncreaseWeightList.vertex2)) {
 
-                MSTEdgeList.add(increaseWeightList.get(i));
-                setUnion(subsetList, increaseWeightList.get(i).vertex1, increaseWeightList.get(i).vertex2);
+                MSTEdgeList.add(anIncreaseWeightList);
+                setUnion(subsetList, anIncreaseWeightList.vertex1, anIncreaseWeightList.vertex2);
             }
         }
 
