@@ -4,13 +4,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class GraphMST {
-    private int NUMBER_OF_VERTEX;
-    private ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<>();
-    private static final int MAX_WEIGHT = 10000;
-    private static final int UNVISITED = 0;
-    private static final int VISITED = 1;
+/**
+ * Implementation of Minimum Spanning Tree in Graph
+ *
+ * @author Cheng-Chi Tang
+ * @since 2018/05/30
+ * */
 
+public class GraphMST {
+    /**
+     * The number of vertices in this graph
+     */
+    private final int NUMBER_OF_VERTEX;
+
+    /**
+     * Matrix that represents this graph
+     */
+    private ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<>();
+
+
+    /**
+     * The maximum weight in this graph
+     */
+    private static final int MAX_WEIGHT = 10000;
+
+    /**
+     * @param size The number of vertices in this graph
+     */
     GraphMST(int size) {
         NUMBER_OF_VERTEX = size;
 
@@ -24,6 +44,13 @@ public class GraphMST {
         }
     }
 
+    /**
+     * Returns the root of a specific vertex from a root list
+     *
+     * @param rootList current root list
+     * @param vertex a vertex whose root will be found
+     * @return root of parameter vertex
+     */
     private int getRootFromCollapsing(ArrayList<Integer> rootList, int vertex) {
 
         int rootVertex = vertex;
@@ -43,6 +70,13 @@ public class GraphMST {
         return rootVertex;
     }
 
+    /**
+     * Unite the sets of two vertices
+     *
+     * @param rootList current root list
+     * @param vertex1 first vertex
+     * @param vertex2 second vertex
+     */
     private void setUnion(ArrayList<Integer> rootList, int vertex1, int vertex2) {
         int root1 = getRootFromCollapsing(rootList, vertex1);
         int root2 = getRootFromCollapsing(rootList, vertex2);
@@ -56,7 +90,15 @@ public class GraphMST {
         }
     }
 
-    private void sortEdgeList(ArrayList<Edge> edgeArrayList) {
+
+    /**
+     * Returns the edge list which is sorted
+     *
+     * @return the edge list which is sorted
+     */
+    private ArrayList<Edge> getSortedEdgeList() {
+
+        ArrayList<Edge> edgeArrayList = new ArrayList<>();
 
         for (int column = 0; column < NUMBER_OF_VERTEX - 1; column++) {
             for (int row = column + 1; row < NUMBER_OF_VERTEX; row++) {
@@ -76,8 +118,13 @@ public class GraphMST {
                 }
             }
         });
+
+        return edgeArrayList;
     }
 
+    /**
+     * Do the Kruskal algorithm for minimum spanning tree and print the result
+     */
     public void doKruskalMST() {
         ArrayList<Edge> MSTEdgeList = new ArrayList<>();
         ArrayList<Integer> subsetList = new ArrayList<>();
@@ -86,8 +133,7 @@ public class GraphMST {
             subsetList.add(-1);
         }
 
-        ArrayList<Edge> increaseWeightList = new ArrayList<>();
-        sortEdgeList(increaseWeightList);
+        ArrayList<Edge> increaseWeightList = getSortedEdgeList();
 
         for (int i = 0; i < increaseWeightList.size(); i++) {
             if (getRootFromCollapsing(subsetList, increaseWeightList.get(i).vertex1)
@@ -107,20 +153,11 @@ public class GraphMST {
 
     }
 
-    private int getMinCostVertex(ArrayList<Integer> costList, ArrayList<Boolean> isVisitedList) {
-
-        int minCost = MAX_WEIGHT;
-        int minCostVertex = 0;
-        for (int vertex = 0; vertex < NUMBER_OF_VERTEX; vertex++) {
-            if (!isVisitedList.get(vertex) && costList.get(vertex) < minCost) {
-                minCost = costList.get(vertex);
-                minCostVertex = vertex;
-            }
-        }
-
-        return minCostVertex;
-    }
-
+    /**
+     * Do the Prim Algorithm for minimum spanning tree and print the result
+     *
+     * @param startVertex the start vertex for Prim Algorithm
+     */
     public void doPrimMST(int startVertex) {
         ArrayList<Integer> costList = new ArrayList<>();
         ArrayList<Integer> predecessorList = new ArrayList<>();
@@ -137,13 +174,15 @@ public class GraphMST {
             int minCostVertex = getMinCostVertex(costList, isVisitedList);
             isVisitedList.set(minCostVertex, true);
 
+            // update predecessorList and costList
             for (int vertex = 0; vertex < NUMBER_OF_VERTEX; vertex++) {
+                int edgeCost = adjMatrix.get(minCostVertex).get(vertex);
                 if (!isVisitedList.get(vertex)
                         && isVerticesConnected(minCostVertex, vertex)
-                        && adjMatrix.get(minCostVertex).get(vertex) < costList.get(vertex)) {
+                        && edgeCost < costList.get(vertex)) {
 
                     predecessorList.set(vertex, minCostVertex);
-                    costList.set(vertex, adjMatrix.get(minCostVertex).get(vertex));
+                    costList.set(vertex, edgeCost);
                 }
             }
         }
@@ -158,19 +197,62 @@ public class GraphMST {
         }
     }
 
+    /**
+     * Returns the next vertex which has minimum cost and has not been visited
+     *
+     * @param costList the current list of cost of arriving the vertex
+     * @param isVisitedList the current list of label to show if the vertex has been visited or not
+     * @return the next vertex which has minimum cost
+     */
+    private int getMinCostVertex(ArrayList<Integer> costList, ArrayList<Boolean> isVisitedList) {
+
+        int minCost = MAX_WEIGHT;
+        int minCostVertex = 0;
+        for (int vertex = 0; vertex < NUMBER_OF_VERTEX; vertex++) {
+            if (!isVisitedList.get(vertex) && costList.get(vertex) < minCost) {
+                minCost = costList.get(vertex);
+                minCostVertex = vertex;
+            }
+        }
+
+        return minCostVertex;
+    }
+
+    /**
+     * Returns <tt>true</tt> is these two vertices is connected
+     *
+     * @param vertex1 first vertex
+     * @param vertex2 second vertex
+     * @return <tt>true</tt> if these two vertices is connected
+     */
     private boolean isVerticesConnected(int vertex1, int vertex2) {
         return (adjMatrix.get(vertex1).get(vertex2) != 0);
     }
 
+    /**
+     * Adds a new edge into this graph
+     *
+     * @param vertex1 first vertex
+     * @param vertex2 second vertex
+     * @param weight the weight between these two vertices
+     */
     public void addEdgeToMatrix(int vertex1, int vertex2, int weight) {
         ArrayList<Edge> rowList = new ArrayList<>();
         adjMatrix.get(vertex1).set(vertex2, weight);
     }
 
+    /**
+     * Returns the current adjacent matrix which represents this graph
+     *
+     * @return the current adjacent matrix which represents this graph
+     */
     public ArrayList<ArrayList<Integer>> getAdjMatrix() {
         return adjMatrix;
     }
 
+    /**
+     * Edge data structure
+     */
     private class Edge {
 
         private int vertex1, vertex2, weight;
