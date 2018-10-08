@@ -3,12 +3,26 @@ package Graph.ShortestPaths;
 public class ShortestPathVertex {
 
     private int index;
-    private int predecessor;
+    private ShortestPathVertex predecessor;
     private int distance;
 
-    ShortestPathVertex(int vertexIndex, int predecessorIndex, int distance){
+    /**
+     * The maximum weight in this graph
+     */
+    private static final int MAX_DISTANCE = 10000;
+
+    private static final ShortestPathVertex NIL = null;
+
+
+    ShortestPathVertex(int vertexIndex){
         this.index = vertexIndex;
-        this.predecessor = predecessorIndex;
+        this.predecessor = NIL;
+        this.distance = MAX_DISTANCE;
+    }
+
+    ShortestPathVertex(int vertexIndex, ShortestPathVertex predecessor, int distance){
+        this.index = vertexIndex;
+        this.predecessor = predecessor;
         this.distance = distance;
     }
 
@@ -16,19 +30,19 @@ public class ShortestPathVertex {
         return index;
     }
 
-    public int getPredecessor(){
+    public ShortestPathVertex getPredecessor(){
         return predecessor;
+    }
+
+    public void setPredecessor(ShortestPathVertex vertex){
+        predecessor = vertex;
     }
 
     public int getDistance(){
         return distance;
     }
 
-    public void setPredecessor(int index){
-        predecessor = index;
-    }
-
-    public void setDistance(int distatnce){
-        this.distance = distatnce;
+    public void setDistance(int distance){
+        this.distance = distance;
     }
 }

@@ -25,7 +25,6 @@ public class GraphMST {
      */
     private ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<>();
 
-
     /**
      * The maximum weight in this graph
      */
@@ -92,7 +91,6 @@ public class GraphMST {
             rootList.set(root1, root2);
         }
     }
-
 
     /**
      * Returns the edge list which is sorted
@@ -240,7 +238,6 @@ public class GraphMST {
      * @param weight the weight between these two vertices
      */
     public void addEdgeToMatrix(int vertex1, int vertex2, int weight) {
-        ArrayList<Edge> rowList = new ArrayList<>();
         adjMatrix.get(vertex1).set(vertex2, weight);
     }
 
