@@ -7,9 +7,9 @@ public class Edge {
     private int weight;
     private ShortestPathVertex vertex1, vertex2;
 
-    Edge(int vertex1, int vertex2, int weight) {
-        this.firstVertexIndex = vertex1;
-        this.secondVertexIndex = vertex2;
+    Edge(int vertex1Index, int vertex2Index, int weight) {
+        this.firstVertexIndex = vertex1Index;
+        this.secondVertexIndex = vertex2Index;
         this.vertex1 = new ShortestPathVertex(firstVertexIndex);
         this.vertex2 = new ShortestPathVertex(secondVertexIndex);
         this.weight = weight;
@@ -33,6 +33,14 @@ public class Edge {
 
     public int getWeight(){
         return weight;
+    }
+
+    @Override
+    public String toString(){
+        return "Edge:\n" +
+                "vertex1:" + firstVertexIndex +"\n" +
+               "vertex2:" + secondVertexIndex +"\n" +
+               "weight:" + weight +"\n" ;
     }
 
 }

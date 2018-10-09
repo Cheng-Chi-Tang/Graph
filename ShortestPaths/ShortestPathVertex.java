@@ -11,7 +11,7 @@ public class ShortestPathVertex {
      */
     private static final int MAX_DISTANCE = 10000;
 
-    private static final ShortestPathVertex NIL = null;
+    private static final ShortestPathVertex NIL = new ShortestPathVertex(-1,null,0);
 
 
     ShortestPathVertex(int vertexIndex){

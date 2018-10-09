@@ -23,91 +23,100 @@ public class GraphShortestPath {
      */
     private static final int MAX_DISTANCE = 10000;
 
-    private static final ShortestPathVertex NIL = null;
+    private static final ShortestPathVertex NIL = new ShortestPathVertex(-1,null,0);
 
     /**
      * @param size the number of vertices in this graph
      */
     public GraphShortestPath(int size) {
         NUMBER_OF_VERTEX = size;
-    }
-
-    public void doBellmanFordAlgorithm(GraphShortestPath graph, int source) {
-        initializeSingleSource(graph, source);
-        for (int i = 1; i < graph.NUMBER_OF_VERTEX; i++) {
-
+        for (int i = 0; i < size; i++) {
+            vertexArrayList.add(new ShortestPathVertex(i));
         }
     }
 
-    public void initializeSingleSource(GraphShortestPath graph, int sourceIndex) {
-        ArrayList<ShortestPathVertex> vertexList = graph.getVertexArrayList();
-        for (ShortestPathVertex vertex : vertexList) {
+    public boolean doBellmanFordAlgorithm(int sourceIndex) {
+        initializeSingleSource(sourceIndex);
+        for (int i = 1; i < NUMBER_OF_VERTEX; i++) {
+            for (Edge loop : adjList) {
+                doRelaxation(loop.getFirstVertexIndex(), loop.getSecondVertexIndex(), 0);
+            }
+        }
+
+        for (Edge loop : adjList) {
+
+            int originalDistance = vertexArrayList.get(loop.getSecondVertexIndex()).getDistance();
+            int anotherDistance = vertexArrayList.get(loop.getFirstVertexIndex()).getDistance() + loop.getWeight();
+
+            if (originalDistance > anotherDistance) {
+                System.out.println("False");
+                return false;
+            }
+        }
+        printTheShortestPath();
+        return true;
+    }
+
+    public void initializeSingleSource(int sourceIndex) {
+        for (ShortestPathVertex vertex : vertexArrayList) {
             vertex.setPredecessor(NIL);
             vertex.setDistance(MAX_DISTANCE);
         }
-        vertexList.get(sourceIndex).setDistance(0);
+        vertexArrayList.get(sourceIndex).setDistance(0);
     }
 
-    public void doRelaxation(Graph.ShortestPaths.Edge edge) {
+    public void doRelaxation(int firstVertexIndex, int secondVertexIndex, int weight) {
 
         boolean doesListContain = false;
-        Graph.ShortestPaths.Edge rightEdge = new Graph.ShortestPaths.Edge(0, 0,0);
+        Graph.ShortestPaths.Edge rightEdge = new Graph.ShortestPaths.Edge(0, 0, 0);
         for (Graph.ShortestPaths.Edge loop : adjList) {
-            if (loop.getFirstVertexIndex() == edge.getFirstVertexIndex() &&
-                    loop.getSecondVertexIndex() == edge.getSecondVertexIndex()){
+            if (loop.getFirstVertexIndex() == firstVertexIndex &&
+                    loop.getSecondVertexIndex() == secondVertexIndex) {
                 doesListContain = true;
                 rightEdge = loop;
                 break;
             }
         }
 
-        if( !doesListContain ) {
+        if (!doesListContain) {
             System.out.println("This edge doesn't exist.");
             return;
-        }
-        else{
-            System.out.println("This edge is in List.");
+        } else {
+//             log("This edge is " + rightEdge);
         }
 
-        int originalDistance = rightEdge.getVertex1().getDistance();
-        int anotherDistance = rightEdge.getVertex2().getDistance() + rightEdge.getWeight();
+        int originalDistance = vertexArrayList.get(secondVertexIndex).getDistance();
+//        log("originalDistance: " + originalDistance);
+        int anotherDistance = vertexArrayList.get(firstVertexIndex).getDistance() + rightEdge.getWeight();
+//        log("anotherDistance: " + anotherDistance);
 
         if (originalDistance > anotherDistance) {
-            rightEdge.getVertex1().setDistance(anotherDistance);
-            rightEdge.getVertex1().setPredecessor(edge.getVertex2());
+            vertexArrayList.get(secondVertexIndex).setDistance(anotherDistance);
+            vertexArrayList.get(secondVertexIndex).setPredecessor(vertexArrayList.get(firstVertexIndex));
         }
     }
 
-    /**
-     * Adds a new edge into this graph
-     *
-     * @param vertex1 first vertex
-     * @param vertex2 second vertex
-     * @param weight  the weight between these two vertices
-     */
-    public void addEdgeToAdjList(int vertex1, int vertex2, int weight) {
-//        adjList.get(vertex1).set(vertex2, weight);
-        adjList.add(new Edge(vertex1, vertex2, weight));
+    public int getEdgeWeight(int firstVertexIndex, int secondVertexIndex) {
+
+        int targetWeight = 0;
+        for (Graph.ShortestPaths.Edge loop : adjList) {
+            if (loop.getFirstVertexIndex() == firstVertexIndex &&
+                    loop.getSecondVertexIndex() == secondVertexIndex) {
+                targetWeight = loop.getWeight();
+                break;
+            }
+        }
+
+        if (targetWeight == 0) {
+            System.out.println("This edge doesn't exist.");
+        }
+        return targetWeight;
     }
 
-//    /**
-//     * Edge data structure
-//     */
-//    private class Edge {
-//
-//        private int vertex1Index, vertex2Index;
-//        private int weight;
-//        private ShortestPathVertex vertex1, vertex2;
-//
-//        Edge(int vertex1, int vertex2, int weight) {
-//            this.vertex1Index = vertex1;
-//            this.vertex2Index = vertex2;
-//            this.vertex1 = new ShortestPathVertex(vertex1Index);
-//            this.vertex2 = new ShortestPathVertex(vertex2Index);
-//            this.weight = weight;
-//        }
-//
-//    }
+    public void addEdgeToAdjList(int firstVertexIndex, int secondVertexIndex, int weight) {
+//        adjList.get(vertex1).set(vertex2, weight);
+        adjList.add(new Edge(firstVertexIndex, secondVertexIndex, weight));
+    }
 
     public ArrayList<Edge> getAdjList() {
         return adjList;
@@ -115,6 +124,31 @@ public class GraphShortestPath {
 
     public ArrayList<ShortestPathVertex> getVertexArrayList() {
         return vertexArrayList;
+    }
+
+    public int getVertexNumber() {
+        return NUMBER_OF_VERTEX;
+    }
+
+    public void printTheShortestPath() {
+        for (ShortestPathVertex vertex : vertexArrayList) {
+            System.out.println("Vertex: " + vertex.getIndex() + " <-- Predecessor: " + vertex.getPredecessor().getIndex());
+        }
+    }
+
+    public void printEdgeList() {
+        for (Edge edge : adjList)
+            System.out.println(edge);
+    }
+
+    public void printDistances() {
+        for (ShortestPathVertex vertex : vertexArrayList) {
+            System.out.println("Vertex: " + vertex.getIndex() + ", Distance: " + vertex.getDistance());
+        }
+    }
+
+    private void log(String arg){
+        System.out.println(arg);
     }
 
 
