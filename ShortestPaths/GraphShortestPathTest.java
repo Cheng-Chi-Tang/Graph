@@ -4,14 +4,15 @@ public class GraphShortestPathTest {
 
     public static void main(String[] args){
 
-        GraphShortestPath graph = new GraphShortestPath(5);
-
-        graph.addEdgeToAdjList(0, 1, 6);
-        graph.addEdgeToAdjList(0, 2, 7);
+        ShortestPathGraph graph = new ShortestPathGraph(5);
 
         graph.addEdgeToAdjList(1, 2, 8);
         graph.addEdgeToAdjList(1, 3, 5);
         graph.addEdgeToAdjList(1, 4, -4);
+
+        graph.addEdgeToAdjList(0, 1, 6);
+        graph.addEdgeToAdjList(0, 2, 7);
+
 
         graph.addEdgeToAdjList(2, 3, -3);
         graph.addEdgeToAdjList(2, 4, 9);

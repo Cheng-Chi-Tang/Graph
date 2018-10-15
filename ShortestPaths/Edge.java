@@ -15,32 +15,45 @@ public class Edge {
         this.weight = weight;
     }
 
-    public ShortestPathVertex getVertex1(){
+    Edge(int vertex1Index, int vertex2Index) {
+        this.firstVertexIndex = vertex1Index;
+        this.secondVertexIndex = vertex2Index;
+        this.vertex1 = new ShortestPathVertex(firstVertexIndex);
+        this.vertex2 = new ShortestPathVertex(secondVertexIndex);
+        this.weight = 0;
+    }
+
+    public ShortestPathVertex getVertex1() {
         return vertex1;
     }
 
-    public ShortestPathVertex getVertex2(){
+    public ShortestPathVertex getVertex2() {
         return vertex2;
     }
 
-    public int getFirstVertexIndex(){
+    public int getFirstVertexIndex() {
         return firstVertexIndex;
     }
 
-    public int getSecondVertexIndex(){
+    public int getSecondVertexIndex() {
         return secondVertexIndex;
     }
 
-    public int getWeight(){
+    public int getWeight() {
         return weight;
     }
 
+    public boolean equals(Edge edge) {
+        return (firstVertexIndex == edge.getFirstVertexIndex() &&
+                secondVertexIndex == edge.getSecondVertexIndex());
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         return "Edge:\n" +
-                "vertex1:" + firstVertexIndex +"\n" +
-               "vertex2:" + secondVertexIndex +"\n" +
-               "weight:" + weight +"\n" ;
+                "vertex1:" + firstVertexIndex + "\n" +
+                "vertex2:" + secondVertexIndex + "\n" +
+                "weight:" + weight + "\n";
     }
 
 }

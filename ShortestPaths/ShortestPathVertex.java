@@ -11,38 +11,38 @@ public class ShortestPathVertex {
      */
     private static final int MAX_DISTANCE = 10000;
 
-    private static final ShortestPathVertex NIL = new ShortestPathVertex(-1,null,0);
+    private static final ShortestPathVertex NIL = new ShortestPathVertex(-1, null, 0);
 
 
-    ShortestPathVertex(int vertexIndex){
+    ShortestPathVertex(int vertexIndex) {
         this.index = vertexIndex;
         this.predecessor = NIL;
         this.distance = MAX_DISTANCE;
     }
 
-    ShortestPathVertex(int vertexIndex, ShortestPathVertex predecessor, int distance){
+    ShortestPathVertex(int vertexIndex, ShortestPathVertex predecessor, int distance) {
         this.index = vertexIndex;
         this.predecessor = predecessor;
         this.distance = distance;
     }
 
-    public int getIndex(){
+    public int getIndex() {
         return index;
     }
 
-    public ShortestPathVertex getPredecessor(){
+    public ShortestPathVertex getPredecessor() {
         return predecessor;
     }
 
-    public void setPredecessor(ShortestPathVertex vertex){
+    public void setPredecessor(ShortestPathVertex vertex) {
         predecessor = vertex;
     }
 
-    public int getDistance(){
+    public int getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance){
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 }
