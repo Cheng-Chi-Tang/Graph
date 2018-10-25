@@ -8,13 +8,13 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * Implementation of Minimum Spanning Tree in Graph
+ * Implementation of Minimum Spanning Tree in DFSGraph
  *
  * @author Cheng-Chi Tang
  * @since 2018/05/30
  * */
 
-public class GraphMST {
+public class MSTGraph {
     /**
      * The number of vertices in this graph
      */
@@ -33,7 +33,7 @@ public class GraphMST {
     /**
      * @param size the number of vertices in this graph
      */
-    public GraphMST(int size) {
+    public MSTGraph(int size) {
         NUMBER_OF_VERTEX = size;
 
         for (int i = 0; i < NUMBER_OF_VERTEX; i++) {

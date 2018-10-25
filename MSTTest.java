@@ -1,12 +1,12 @@
 package Graph;
 
-import Graph.MinSpanningTree.GraphMST;
+import Graph.MinSpanningTree.MSTGraph;
 
-public class GraphMSTTest {
+public class MSTTest {
 
     public static void main(String[] args){
 
-        GraphMST g6 = new GraphMST(7);
+        MSTGraph g6 = new MSTGraph(7);
 
         g6.addEdgeToMatrix(0, 1, 5);g6.addEdgeToMatrix(0, 5, 3);
         g6.addEdgeToMatrix(1, 0, 5);g6.addEdgeToMatrix(1, 2, 10);g6.addEdgeToMatrix(1, 4, 1);g6.addEdgeToMatrix(1, 6, 4);
