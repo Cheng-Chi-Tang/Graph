@@ -2,6 +2,7 @@ package Graph.ShortestPaths;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class ShortestPathGraph {
 
@@ -77,13 +78,28 @@ public class ShortestPathGraph {
 
     }
 
+    public void doTopologicallySortForVertexList(){
+
+    }
+
     public ArrayList getTopologicallySortedList() {
         ArrayList<ShortestPathVertex> topologicallySortedList = new ArrayList<>();
 
-//        for(ShortestPathVertex vertex : vertexList) {
-//            topologicallySortedList.add(new ShortestPathVertex());
-//        }
+        for (ShortestPathVertex vertex : vertexList) {
+            topologicallySortedList.add(new ShortestPathVertex(vertex));
+        }
 
+        Collections.sort(topologicallySortedList, new Comparator<ShortestPathVertex>() {
+            @Override
+            public int compare(ShortestPathVertex vertex1, ShortestPathVertex vertex2) {
+                if (vertex1.getFinishTIme() > vertex2.getFinishTIme()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+
+            }
+        });
 
         return topologicallySortedList;
     }
@@ -109,7 +125,7 @@ public class ShortestPathGraph {
         startVertex.setColor(GRAY);
 
         for (ShortestPathVertex vertex : adjacencyList.get(startVertexIndex)) {
-            if(vertex.getColor() == WHITE){
+            if (vertex.getColor() == WHITE) {
                 vertex.setPredecessor(startVertex);
                 doDepthFirstSearchVisit(vertex.getIndex());
             }

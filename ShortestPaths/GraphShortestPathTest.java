@@ -1,5 +1,7 @@
 package Graph.ShortestPaths;
 
+import java.util.ArrayList;
+
 public class GraphShortestPathTest {
 
     public static void main(String[] args) {
@@ -27,13 +29,21 @@ public class GraphShortestPathTest {
 //        boolean doesNegativeCycleNotExist = graph.doBellmanFordAlgorithm(0);
 //        System.out.println("doesnotNegativeCycleExist: " + doesNegativeCycleNotExist);
 
-        /*graph.doDepthFirstSearch();
+        graph.doDepthFirstSearch();
         for (ShortestPathVertex vertex : graph.getVertexList()) {
             System.out.println("vertex: " + vertex.getIndex());
             System.out.println("discoverTime: " + vertex.getDiscoverTime());
             System.out.println("finishTime: " + vertex.getFinishTIme());
             System.out.println();
-        }*/
+        }
+
+
+        ArrayList<ShortestPathVertex> list = graph.getTopologicallySortedList();
+        int i = 0;
+        for(ShortestPathVertex vertex:list){
+            System.out.println("list[" + i + "]: vertexIndex: " + vertex.getIndex() +", FinishTime: " + vertex.getFinishTIme() );
+            i++;
+        }
 
 
     }
