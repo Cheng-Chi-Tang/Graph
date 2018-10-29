@@ -74,12 +74,28 @@ public class ShortestPathGraph {
         return true;
     }
 
-    public void doDAGShortestPaths() {
-
+    public void doDAGShortestPaths(int sourceIndex) {
+        doTopologicallySortingVertexList();
+        initializeSingleSource(sourceIndex);
+        for(ShortestPathVertex headVertex : vertexList){
+            for(ShortestPathVertex followerVertex : adjacencyList.get(headVertex.getIndex())){
+                doRelaxation(headVertex.getIndex(), followerVertex.getIndex());
+            }
+        }
     }
 
-    public void doTopologicallySortForVertexList(){
+    private void doTopologicallySortingVertexList(){
+        Collections.sort(vertexList, new Comparator<ShortestPathVertex>() {
+            @Override
+            public int compare(ShortestPathVertex vertex1, ShortestPathVertex vertex2) {
+                if (vertex1.getFinishTIme() > vertex2.getFinishTIme()) {
+                    return -1;
+                } else {
+                    return 1;
+                }
 
+            }
+        });
     }
 
     public ArrayList getTopologicallySortedList() {
