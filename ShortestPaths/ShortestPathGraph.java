@@ -1,11 +1,15 @@
 package Graph.ShortestPaths;
 
+import Heap.Heap;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class ShortestPathGraph {
 
+    // region attributes
 
     /**
      * The number of vertices in this graph
@@ -24,7 +28,6 @@ public class ShortestPathGraph {
      */
     private ArrayList<ShortestPathVertex> vertexList = new ArrayList<>();
 
-
     /**
      * The maximum weight in this graph
      */
@@ -35,14 +38,20 @@ public class ShortestPathGraph {
      */
     private static final ShortestPathVertex NIL = new ShortestPathVertex(-1, null, 0);
 
-
+    /**
+     * Color constants
+     */
     private static final int WHITE = 0;
     private static final int GRAY = 1;
     private static final int BLACK = 2;
 
     private int timestamp = 0;
 
+    // endregion attributes
+
     /**
+     * Constructor
+     *
      * @param size the number of vertices in this graph
      */
     public ShortestPathGraph(int size) {
@@ -77,14 +86,39 @@ public class ShortestPathGraph {
     public void doDAGShortestPaths(int sourceIndex) {
         doTopologicallySortingVertexList();
         initializeSingleSource(sourceIndex);
-        for(ShortestPathVertex headVertex : vertexList){
-            for(ShortestPathVertex followerVertex : adjacencyList.get(headVertex.getIndex())){
+        for (ShortestPathVertex headVertex : vertexList) {
+            for (ShortestPathVertex followerVertex : adjacencyList.get(headVertex.getIndex())) {
                 doRelaxation(headVertex.getIndex(), followerVertex.getIndex());
             }
         }
     }
 
-    private void doTopologicallySortingVertexList(){
+    public void doDijkstraAlgorithm(int sourceIndex) {
+        initializeSingleSource(sourceIndex);
+
+        ArrayList<Integer> keyList = new ArrayList<>();
+        for (ShortestPathVertex vertex : vertexList) {
+            keyList.add(vertex.getDistance());
+        }
+
+        Heap<ShortestPathVertex> vertexHeap = new Heap<>(keyList, vertexList);
+        vertexHeap.buildMinHeap();
+
+        ArrayList<ShortestPathVertex> desiredSet = new ArrayList<>();
+
+        while (vertexHeap.size() > 0) {
+            ShortestPathVertex minVertex = vertexHeap.extractMinObject();
+            if (!desiredSet.contains(minVertex)) {
+                desiredSet.add(minVertex);
+            }
+
+            for(ShortestPathVertex vertex : adjacencyList.get(minVertex.getIndex())){
+                doRelaxation(minVertex.getIndex(), vertex.getIndex());
+            }
+        }
+    }
+
+    private void doTopologicallySortingVertexList() {
         Collections.sort(vertexList, new Comparator<ShortestPathVertex>() {
             @Override
             public int compare(ShortestPathVertex vertex1, ShortestPathVertex vertex2) {
@@ -149,7 +183,6 @@ public class ShortestPathGraph {
         startVertex.setColor(BLACK);
         startVertex.setFinishTIme(++timestamp);
     }
-
 
     public void initializeSingleSource(int sourceIndex) {
         for (ShortestPathVertex vertex : vertexList) {

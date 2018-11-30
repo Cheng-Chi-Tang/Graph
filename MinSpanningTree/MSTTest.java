@@ -1,4 +1,4 @@
-package Graph;
+package Graph.MinSpanningTree;
 
 import Graph.MinSpanningTree.MSTGraph;
 

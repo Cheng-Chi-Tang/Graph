@@ -31,13 +31,13 @@ public class ShortestPathVertex {
         this.color = WHITE;
     }
 
-    ShortestPathVertex(ShortestPathVertex anotherVertex) {
-        this.index = anotherVertex.getIndex();
-        this.predecessor = anotherVertex.getPredecessor();
-        this.distance = anotherVertex.getDistance();
-        this.discoverTime = anotherVertex.getDiscoverTime();
-        this.finishTIme = anotherVertex.getFinishTIme();
-        this.color = anotherVertex.getColor();
+    ShortestPathVertex(ShortestPathVertex vertex) {
+        this.index = vertex.getIndex();
+        this.predecessor = vertex.getPredecessor();
+        this.distance = vertex.getDistance();
+        this.discoverTime = vertex.getDiscoverTime();
+        this.finishTIme = vertex.getFinishTIme();
+        this.color = vertex.getColor();
     }
 
     ShortestPathVertex(int vertexIndex, ShortestPathVertex predecessor, int distance) {
